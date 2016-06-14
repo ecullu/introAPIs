@@ -1,13 +1,24 @@
 var searchNode = document.querySelector('#searchBox')
-var legURL = $.getJSON('https://congress.api.sunlightfoundation.com/legislators?apikey=a9648334a77f4a0e88bed1815fb9e028')
+var more = document.querySelector('#showMore')
+var perPage = 10
+var legURL = $.getJSON('https://congress.api.sunlightfoundation.com/legislators?apikey=a9648334a77f4a0e88bed1815fb9e028&per_page=' + perPage)
 var mainDiv = document.querySelector("#legList")
+
+
+var showMore = function(){
+	perPage += 10
+	var showMoreURL = $.getJSON('https://congress.api.sunlightfoundation.com/legislators?apikey=a9648334a77f4a0e88bed1815fb9e028&per_page=' + perPage)
+	mainDiv.innerHTML = ''
+	showMoreURL.then(showLegislators)
+}
+
 
 var filterbyZip = function(zipcode){
 	if(zipcode.keyCode === 13){
 		var zipBox = zipcode.target
 		var zipCode = zipBox.value
 		console.log(zipCode)
-		var legLocationURL = $.getJSON('https://congress.api.sunlightfoundation.com//legislators/locate?apikey=a9648334a77f4a0e88bed1815fb9e028&zip=' + zipCode)
+		var legLocationURL = $.getJSON('https://congress.api.sunlightfoundation.com//legislators/locate?apikey=a9648334a77f4a0e88bed1815fb9e028&per_page=10&zip=' + zipCode)
 		mainDiv.innerHTML = ''
 	}
 	legLocationURL.then(showLegislators)
@@ -53,6 +64,8 @@ var showLegislators = function(apiResponse){
 }
 legURL.then(showLegislators)
 searchNode.addEventListener('keydown', filterbyZip)
+more.addEventListener('click', showMore)
+
 
 
 

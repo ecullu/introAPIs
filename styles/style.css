@@ -24,3 +24,7 @@
 	width: 75%;
 	margin:auto;
 }
+
+#container button{
+	margin: 1em auto;
+}
